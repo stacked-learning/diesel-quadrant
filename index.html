@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacked Learning Diesel Quadrant</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    
+    <style>
+        /* Custom animations matching the React app */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .animate-slide-down {
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        button {
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 p-4 lg:p-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                    Stacked Learning Diesel Quadrant
+                </h1>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Quadrant Container -->
+            <div id="quadrantContainer" class="transition-all duration-500 ease-out">
+                <!-- Temporary Image -->
+                <div id="tempImageContainer" class="mb-6 flex justify-center">
+                    <img id="tempImage" src="DieselImages/DieselCycleGIF_1763334047467.gif" 
+                         alt="Quadrant visualization" 
+                         class="w-full md:w-[85%] h-auto object-contain rounded-lg" 
+                         data-testid="img-temp">
+                </div>
+                
+                <!-- Grid View -->
+                <div id="gridView" class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 animate-fade-in">
+                    <button
+                        data-quadrant="compression"
+                        class="quadrant-btn min-h-[100px] md:min-h-[120px] rounded-2xl font-semibold text-2xl md:text-3xl transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-xl active:scale-95 bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200"
+                        data-testid="button-compression">
+                        Compression
+                    </button>
+                    <button
+                        data-quadrant="heatAddition"
+                        class="quadrant-btn min-h-[100px] md:min-h-[120px] rounded-2xl font-semibold text-2xl md:text-3xl transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-xl active:scale-95 bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200"
+                        data-testid="button-heat-addition">
+                        Heat Addition
+                    </button>
+                    <button
+                        data-quadrant="expansion"
+                        class="quadrant-btn min-h-[100px] md:min-h-[120px] rounded-2xl font-semibold text-2xl md:text-3xl transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-xl active:scale-95 bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200"
+                        data-testid="button-expansion">
+                        Expansion
+                    </button>
+                    <button
+                        data-quadrant="heatRejection"
+                        class="quadrant-btn min-h-[100px] md:min-h-[120px] rounded-2xl font-semibold text-2xl md:text-3xl transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-xl active:scale-95 bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200"
+                        data-testid="button-heat-rejection">
+                        Heat Rejection
+                    </button>
+                </div>
+
+                <!-- Navigation View -->
+                <div id="navView" class="hidden flex-wrap justify-center gap-4 mb-8 animate-slide-down">
+                    <button
+                        data-quadrant="compression"
+                        class="nav-btn px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200">
+                        Compression
+                    </button>
+                    <button
+                        data-quadrant="heatAddition"
+                        class="nav-btn px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200">
+                        Heat Addition
+                    </button>
+                    <button
+                        data-quadrant="expansion"
+                        class="nav-btn px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200">
+                        Expansion
+                    </button>
+                    <button
+                        data-quadrant="heatRejection"
+                        class="nav-btn px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 ease-out transform hover:scale-105 focus:outline-none focus:ring-4 hover:shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-200">
+                        Heat Rejection
+                    </button>
+                </div>
+
+                <!-- Instruction Text -->
+                <div id="instructionText" class="text-center text-gray-600 text-lg mb-8">
+                    Hover over each quadrant to explore, click to view details
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="contentArea" class="hidden mb-8"></div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let state = {
+            selectedQuadrant: null,
+            isDetailView: false,
+            hoveredQuadrant: null,
+            hoverTimeout: null,
+            selectedDiagrams: {
+                compression: 'schematic',
+                heatAddition: 'schematic',
+                expansion: 'schematic',
+                heatRejection: 'schematic'
+            }
+        };
+
+        // Image mappings
+        const tspvImages = {
+            compression: 'DieselImages/image_1763294823254.png',
+            heatAddition: 'DieselImages/image_1763330598096.png',
+            expansion: 'DieselImages/image_1763294834693.png',
+            heatRejection: 'DieselImages/image_1763330661337.png'
+        };
+
+        const schematicImages = {
+            compression: 'DieselImages/image_1763294531792.png',
+            heatAddition: 'DieselImages/image_1763294538218.png',
+            expansion: 'DieselImages/image_1763294542577.png',
+            heatRejection: 'DieselImages/image_1763294546653.png'
+        };
+
+        // Diagram captions
+        const captions = {
+            compression: {
+                schematic: "Compression reduces cylinder volume from Bottom Dead Center to Top Dead Center using isentropic process.",
+                tspv: "Compression is an isentropic process where temperature and pressure increase as volume decreases."
+            },
+            heatAddition: {
+                schematic: "Heat addition in a Diesel Cycle causes a slight expansion in volume, and increase in temperatures.",
+                tspv: "Heat Addition is an isobaric process which increases entropy in the system."
+            },
+            expansion: {
+                schematic: "Expansion converts the high-pressure, high-temperature gas into useful work as the piston moves to maximum volume.",
+                tspv: "Expansion is an isentropic process where pressure and temperature drop as the volume increases."
+            },
+            heatRejection: {
+                schematic: "Heat rejection returns the system to its initial state at constant volume.",
+                tspv: "Heat Rejection is an isochoric process that decreases entropy and returns to initial conditions."
+            }
+        };
+
+        // Quadrant data
+        const quadrantData = {
+            compression: {
+                title: "Compression",
+                sections: [
+                    {
+                        sectionTitle: "Compression Process",
+                        text: "In the compression process, the volume inside the cylinder is compressed from the Bottom Dead Center (BDC), where the cycle has maximum volume, to the Top Dead Centre (TDC), where the volume is at a minimum. The compression ratio represents the ratio between the maximum and minimum volumes. In the Ideal Diesel cycle, this process is assumed to occur isentropically - meaning no energy losses from friction, and that the process is reversible - as no heat is transferred to or from the gas."
+                    },
+                    {
+                        sectionTitle: "TDC vs BDC",
+                        text: "Top Dead Centre (TDC) and Bottom Dead Centre are defined with respect to the crankshaft. When the piston is most extended (once the fluid is compressed), it reaches its highest position with respect to the crankshaft. Bottom Dead Centre (BDC) is the position where the volume is maximum, and the piston is closest to the crankshaft.",
+                        image: "DieselImages/image_1763266338789.png"
+                    },
+                    {
+                        sectionTitle: "Compression Ratio",
+                        text: "",
+                        image: "DieselImages/image_1763328846303.png",
+                        imageSize: "70%",
+                        imageCaption: "The compression ratio is the ratio between the maximum and minimum cylinder volume throughout the cycle.",
+                        formula: "r_c = \\frac{V_{max}}{V_{min}}",
+                        formulaCaption: "The compression ratio represents the ratio of the maximum to minimum volumes in the cycle."
+                    },
+                    {
+                        sectionTitle: "Cutoff Ratio",
+                        text: "",
+                        formula: "\\alpha = \\frac{V_3}{V_2} = \\frac{V_3}{V_{min}}",
+                        formulaCaption: "The cutoff ratio represents the volume ratio between the pre- and post- combustion states."
+                    },
+                    {
+                        sectionTitle: "Compression and Cycle Efficiency",
+                        text: "The compression process determines the efficiency of the Diesel Cycle. As can be seen below, for an ideal Diesel Cycle, the efficiency depends on the compression ratio. This relationship of the efficiency and compression ratio applies to many other thermal cycles (eg Brayton Cycle).",
+                        formula: "\\eta_{th,Diesel} = 1 - \\frac{1}{r^{\\gamma-1}}(\\frac{\\alpha^\\gamma-1}{\\gamma(\\alpha-1)})",
+                        formulaCaption: "The thermal efficiency of a Diesel Cycle increases as a function of the compression ratio, for a set heat capacity ratio. For engines operating on the Diesel-Cycle, compression ratios generally range between 8:1 and 14:1",
+                        image: "DieselImages/image_1763267261030.png",
+                        imageCaption: "The thermal efficiency is a function of the Compression Ratio. However, the precise relation also depends on the specific heat ratio (k) value, which is often assumed constant."
+                    },
+                    {
+                        sectionTitle: "Otto vs Diesel Efficiency",
+                        text: "The design of Diesel and Otto engines differs based on the compression ratios achieved. Diesel engines operate at higher pressures compared engines based on the Otto cycle. Additionally, they're designed to self-ignite, thus do not require a spark plug.\n\nFor the same compression ratio, an Otto cycle will be more efficient than a diesel one. However, diesel engines operate at higher compression ratios, which results in significant efficiency improvements.",
+                        image: "DieselImages/image_1763329536984.png"
+                    }
+                ]
+            },
+            heatAddition: {
+                title: "Heat Addition",
+                sections: [
+                    {
+                        sectionTitle: "Heat Addition Process",
+                        text: "The Ideal Diesel Cycle represents the combustion process through a simple isochoric heat addition - meaning the volume stays constant. This is assumed to occur instantaneously, which differs from reality, where the ignition phase occurs over a short period of time. Additionally, any post-combustion chemistry is ignored in this cycle.",
+                        image: "DieselImages/image_1763329765231.png",
+                        imageCaption: "The addition of heat in the Diesel Cycle is solely represented as a heat transfer. Here the prescence of the spark plug is effectively ignored.",
+                        formula: "q_H = c_v(T_3-T_2)",
+                        formulaDescription: "\\text{where } q_H = \\text{Heat Added, } c_v = \\text{Specific Heat Capacity}"
+                    },
+                    {
+                        sectionTitle: "Spark Ignition Process",
+                        text: "Heat addition occurs once the cylinder volume is compressed to its minimum volume. For real engines, this process doesn't occur until a spark plug generates a spark in the cylinder, initiating combustion - hence why Diesel Engines are often called \"Spark Ignition Engines\". When the piston is around top-dead center, it is easiest to combust the fuel, as the pressure and temperatures at this stage are the highest."
+                    },
+                    {
+                        sectionTitle: "Spark vs Compression Ignition",
+                        text: "Diesel Cycle engines use spark ignition, where a spark plug ignites the fuel-air mixture. This contrasts with compression ignition (used in Diesel engines), where the fuel auto-ignites due to high compression temperatures without requiring a spark plug.",
+                        highlight: true
+                    },
+                    {
+                        sectionTitle: "Heat Addition and Efficiency",
+                        text: "From the thermal efficiency relation for a Diesel Cycle, efficiency increases with higher heat addition relative to the amount of heat rejected. This is also observed with the temperature across the cycle. If T₃ is increased to a larger amount compared to T₂, more heat will be added. Likewise, the smaller T₄ is relative to T₁, the less heat will be rejected.",
+                        formula: "\\eta_{th,\\text{Diesel}} = 1 - \\frac{q_{out}}{q_{in}} = 1 - \\frac{T_4 - T_1}{T_3 - T_2}",
+                        formulaCaption: "Above we can see the formulated relationship between the added to rejected energy, and the thermal efficiency.",
+                        image: "DieselImages/image_1763269627652.png",
+                        imageCaption: "The thermal efficiency of the Diesel cycle depends on the ratio of heat added to heat rejected"
+                    }
+                ]
+            },
+            expansion: {
+                title: "Expansion",
+                sections: [
+                    {
+                        sectionTitle: "Expansion Process",
+                        text: "Like compression, expansion is assumed to take place isentropically - where no energy is lost due to friction. Additionally, no heat is transferred to or from the gas, making it adiabatic. During this process, the high pressure fluid exerts a force on the piston head, and pushes it upwards."
+                    },
+                    {
+                        sectionTitle: "Volume Change During Expansion",
+                        text: "The volume inside of the cylinder is represented through the compression ratio. However, unlike the compression stroke, here the process starts at the Top Dead Center (minimum volume), and expands to Bottom Dead Center (maximum). It is the high pressure and temperature gases following ignition which lead to expansion of the cylinder volume.",
+                        image: "DieselImages/image_1763270332906.png"
+                    },
+                    {
+                        sectionTitle: "Power Produced",
+                        text: "The expansion process, also known as the Power Stroke, results in work being produced from the engine - through the gases displacing the piston. The total power produced by the engine will be the difference between the work input during compression, and the output work from expansion. This can be represented by the area enclosed in an Otto cycle's PV diagram.",
+                        image: "DieselImages/image_1763288377012.png",
+                        imageCaption: "PV diagram showing the enclosed area representing the net work output of the Diesel Cycle."
+                    }
+                ]
+            },
+            heatRejection: {
+                title: "Heat Rejection",
+                sections: [
+                    {
+                        sectionTitle: "Heat Rejection Process",
+                        text: "Heat Rejection is modeled through an isochoric process, where the volume remains constant, like in the heat addition phase. Here, the piston remains stationary, and it is assumed the heat rejection and pressure drop occur instantaneously."
+                    },
+                    {
+                        sectionTitle: "Heat Sink",
+                        text: "For the Diesel Cycle, heat is removed to an idealized heat sink surrounding the control mass boundaries. For real engines, the heat sink is typically the surrounding air, or a cooling fluid."
+                    }
+                ]
+            }
+        };
+
+        // Utility: Render LaTeX
+        function renderLatex(formula, inline = true) {
+            const elem = document.createElement(inline ? 'span' : 'div');
+            katex.render(formula, elem, {
+                throwOnError: false,
+                displayMode: !inline
+            });
+            return elem;
+        }
+
+        // Handle hover
+        function handleHover(quadrant) {
+            if (state.hoverTimeout) {
+                clearTimeout(state.hoverTimeout);
+                state.hoverTimeout = null;
+            }
+            state.hoveredQuadrant = quadrant;
+            updateTempImage();
+        }
+
+        function handleHoverOut() {
+            state.hoverTimeout = setTimeout(() => {
+                state.hoveredQuadrant = null;
+                updateTempImage();
+            }, 100);
+        }
+
+        function updateTempImage() {
+            const img = document.getElementById('tempImage');
+            if (!state.hoveredQuadrant) {
+                img.src = 'DieselImages/DieselCycleGIF_1763334047467.gif';
+            } else {
+                img.src = tspvImages[state.hoveredQuadrant];
+            }
+        }
+
+        // Handle click
+        function handleQuadrantClick(quadrant) {
+            if (state.selectedQuadrant === quadrant && state.isDetailView) {
+                // Return to grid
+                state.selectedQuadrant = null;
+                state.isDetailView = false;
+            } else {
+                // Show detail
+                state.selectedQuadrant = quadrant;
+                state.isDetailView = true;
+            }
+            updateView();
+        }
+
+        // Update view
+        function updateView() {
+            const gridView = document.getElementById('gridView');
+            const navView = document.getElementById('navView');
+            const tempContainer = document.getElementById('tempImageContainer');
+            const contentArea = document.getElementById('contentArea');
+            const instructionText = document.getElementById('instructionText');
+
+            if (state.isDetailView) {
+                // Hide grid, show nav
+                gridView.classList.add('hidden');
+                navView.classList.remove('hidden');
+                navView.classList.add('flex');
+                tempContainer.classList.add('hidden');
+                contentArea.classList.remove('hidden');
+
+                // Update instruction
+                const name = state.selectedQuadrant === 'heatAddition' ? 'Heat Addition' :
+                            state.selectedQuadrant === 'heatRejection' ? 'Heat Rejection' :
+                            state.selectedQuadrant.charAt(0).toUpperCase() + state.selectedQuadrant.slice(1);
+                instructionText.textContent = `Click the ${name} button again to return to the grid view`;
+
+                // Update active nav buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    if (btn.dataset.quadrant === state.selectedQuadrant) {
+                        btn.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
+                        btn.classList.add('bg-yellow-600', 'ring-4', 'ring-yellow-300', 'shadow-lg');
+                    } else {
+                        btn.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+                        btn.classList.remove('bg-yellow-600', 'ring-4', 'ring-yellow-300', 'shadow-lg');
+                    }
+                });
+
+                // Render content
+                renderContent();
+            } else {
+                // Show grid, hide nav
+                gridView.classList.remove('hidden');
+                navView.classList.add('hidden');
+                navView.classList.remove('flex');
+                tempContainer.classList.remove('hidden');
+                contentArea.classList.add('hidden');
+                instructionText.textContent = 'Hover over each quadrant to explore, click to view details';
+
+                // Reset all button states
+                document.querySelectorAll('.quadrant-btn').forEach(btn => {
+                    btn.classList.remove('bg-yellow-600', 'ring-4', 'ring-yellow-300', 'shadow-lg');
+                    btn.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+                });
+            }
+        }
+
+        // Render content
+        function renderContent() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
+            contentArea.className = 'mb-8 animate-slide-up';
+
+            const data = quadrantData[state.selectedQuadrant];
+
+            // Title
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'text-center mb-6';
+            titleDiv.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">${data.title}</h2>
+                <div class="w-16 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+            `;
+            contentArea.appendChild(titleDiv);
+
+            // Diagram section
+            const diagramDiv = document.createElement('div');
+            diagramDiv.className = 'mb-8 max-w-4xl mx-auto';
+
+            // Image
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'flex justify-center mb-4';
+            const img = document.createElement('img');
+            img.className = 'w-full md:w-3/4 h-auto object-contain rounded-lg';
+            img.dataset.testid = `img-${state.selectedQuadrant}-diagram`;
+            updateDiagramImage(img);
+            imgWrapper.appendChild(img);
+            diagramDiv.appendChild(imgWrapper);
+
+            // Caption
+            const caption = document.createElement('p');
+            caption.className = 'text-gray-700 text-center text-lg leading-relaxed mb-4';
+            caption.dataset.testid = `text-${state.selectedQuadrant}-caption`;
+            updateDiagramCaption(caption);
+            diagramDiv.appendChild(caption);
+
+            // Legend
+            const legend = document.createElement('div');
+            legend.className = 'text-gray-600 text-center text-sm mb-4 italic';
+            legend.dataset.testid = 'text-diagram-legend';
+            
+            const row1 = document.createElement('div');
+            row1.className = 'flex justify-center gap-6 flex-wrap mb-1';
+            row1.innerHTML = `
+                <span>${renderLatex('T').outerHTML} - Temperature</span>
+                <span>${renderLatex('S').outerHTML} - Entropy</span>
+                <span>${renderLatex('P').outerHTML} - Pressure</span>
+                <span>${renderLatex('V').outerHTML} - Volume</span>
+            `;
+            legend.appendChild(row1);
+            
+            const row2 = document.createElement('div');
+            row2.className = 'flex justify-center gap-6 flex-wrap';
+            row2.innerHTML = `
+                <span>${renderLatex('q_{in}').outerHTML} - Heat In</span>
+                <span>${renderLatex('q_{out}').outerHTML} - Heat Out</span>
+            `;
+            legend.appendChild(row2);
+            diagramDiv.appendChild(legend);
+
+            // Toggle buttons
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'flex justify-center gap-4';
+
+            const schematicBtn = document.createElement('button');
+            schematicBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all';
+            schematicBtn.textContent = 'Schematic';
+            schematicBtn.dataset.testid = `button-${state.selectedQuadrant}-schematic`;
+            schematicBtn.onclick = () => {
+                state.selectedDiagrams[state.selectedQuadrant] = 'schematic';
+                updateDiagramImage(img);
+                updateDiagramCaption(caption);
+                updateButtonStates();
+            };
+
+            const tspvBtn = document.createElement('button');
+            tspvBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all';
+            tspvBtn.textContent = 'TS and PV Diagram';
+            tspvBtn.dataset.testid = `button-${state.selectedQuadrant}-tspv-diagram`;
+            tspvBtn.onclick = () => {
+                state.selectedDiagrams[state.selectedQuadrant] = 'tspv';
+                updateDiagramImage(img);
+                updateDiagramCaption(caption);
+                updateButtonStates();
+            };
+
+            function updateButtonStates() {
+                const isSchematic = state.selectedDiagrams[state.selectedQuadrant] === 'schematic';
+                if (isSchematic) {
+                    schematicBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all bg-yellow-500 text-white shadow-md';
+                    tspvBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all bg-gray-200 text-gray-700 hover:bg-gray-300';
+                } else {
+                    schematicBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all bg-gray-200 text-gray-700 hover:bg-gray-300';
+                    tspvBtn.className = 'px-6 py-2 rounded-lg font-medium transition-all bg-yellow-500 text-white shadow-md';
+                }
+            }
+
+            updateButtonStates();
+            buttonsDiv.appendChild(schematicBtn);
+            buttonsDiv.appendChild(tspvBtn);
+            diagramDiv.appendChild(buttonsDiv);
+            contentArea.appendChild(diagramDiv);
+
+            // Sections
+            const sectionsContainer = document.createElement('div');
+            sectionsContainer.className = 'max-w-4xl mx-auto';
+
+            data.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'p-6 mb-6';
+
+                // Title
+                const title = document.createElement('h3');
+                title.className = 'text-2xl font-semibold text-gray-800 mb-4';
+                title.textContent = section.sectionTitle;
+                sectionDiv.appendChild(title);
+
+                // Text
+                if (section.text) {
+                    const text = document.createElement('p');
+                    text.className = 'text-gray-700 leading-relaxed mb-4 whitespace-pre-line';
+                    if (section.highlight) {
+                        text.className += ' bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500';
+                    }
+                    text.textContent = section.text;
+                    sectionDiv.appendChild(text);
+                }
+
+                // Formula
+                if (section.formula) {
+                    const formulaDiv = document.createElement('div');
+                    formulaDiv.className = 'my-4 text-center text-xl';
+                    formulaDiv.appendChild(renderLatex(section.formula, false));
+                    sectionDiv.appendChild(formulaDiv);
+
+                    if (section.formulaDescription) {
+                        const descDiv = document.createElement('div');
+                        descDiv.className = 'text-center text-gray-600 italic mb-2';
+                        descDiv.appendChild(renderLatex(section.formulaDescription, false));
+                        sectionDiv.appendChild(descDiv);
+                    }
+
+                    if (section.formulaCaption) {
+                        const captionDiv = document.createElement('p');
+                        captionDiv.className = 'text-center text-gray-600 italic text-sm mt-2';
+                        captionDiv.textContent = section.formulaCaption;
+                        sectionDiv.appendChild(captionDiv);
+                    }
+                }
+
+                // Image
+                if (section.image) {
+                    const img = document.createElement('img');
+                    img.src = section.image;
+                    img.className = section.imageSize === '70%' 
+                        ? 'w-[70%] mx-auto my-4 rounded-lg'
+                        : 'w-full my-4 rounded-lg';
+                    sectionDiv.appendChild(img);
+
+                    if (section.imageCaption) {
+                        const cap = document.createElement('p');
+                        cap.className = 'text-center text-gray-600 italic text-sm mt-2';
+                        cap.textContent = section.imageCaption;
+                        sectionDiv.appendChild(cap);
+                    }
+                }
+
+                sectionsContainer.appendChild(sectionDiv);
+            });
+
+            contentArea.appendChild(sectionsContainer);
+        }
+
+        function updateDiagramImage(img) {
+            const q = state.selectedQuadrant;
+            const type = state.selectedDiagrams[q];
+            img.src = type === 'schematic' ? schematicImages[q] : tspvImages[q];
+            img.alt = type === 'schematic' ? 'Schematic' : 'TS and PV Diagram';
+        }
+
+        function updateDiagramCaption(caption) {
+            const q = state.selectedQuadrant;
+            const type = state.selectedDiagrams[q];
+            caption.textContent = captions[q][type];
+        }
+
+        // Event listeners
+        document.querySelectorAll('.quadrant-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => handleHover(btn.dataset.quadrant));
+            btn.addEventListener('mouseleave', handleHoverOut);
+            btn.addEventListener('click', () => handleQuadrantClick(btn.dataset.quadrant));
+        });
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => handleQuadrantClick(btn.dataset.quadrant));
+        });
+    </script>
+</body>
+</html>
